@@ -1,0 +1,26 @@
+{
+    "identifier": "DeGrunt.Ruby",
+    "name": "Ruby",
+    "organization": "DeGrunt",
+    "description": "Provides Ruby language support",
+    "version": "0.1.0",
+    "categories": ["languages"],
+    "repository": "https://github.com/tdegrunt/nova-ruby",
+    "bugs": "https://github.com/tdegrunt/nova-ruby/issues",
+    "license": "MIT",
+    "main": "main.js",
+    
+    "entitlements": {
+        "process": true,
+        "filesystem": "readonly"
+    },
+    
+    "config": [
+        {
+            "key": "ruby.language-server-path",
+            "title": "Language Server Path",
+            "type": "path",
+            "placeholder": "/usr/local/bin/solargraph"
+        }
+    ]
+}
