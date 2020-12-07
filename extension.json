@@ -1,7 +1,7 @@
 {
-    "identifier": "DeGrunt.Ruby",
+    "identifier": "tdegrunt.Ruby",
     "name": "Ruby",
-    "organization": "DeGrunt",
+    "organization": "tdegrunt",
     "description": "Provides Ruby language support",
     "version": "0.1.0",
     "categories": ["languages"],
