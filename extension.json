@@ -9,12 +9,13 @@
     "bugs": "https://github.com/tdegrunt/nova-ruby/issues",
     "license": "MIT",
     "main": "main.js",
-    
+    "activationEvents": [
+        "onLanguage:ruby"
+    ],
     "entitlements": {
         "process": true,
         "filesystem": "readonly"
     },
-    
     "config": [
         {
             "key": "ruby.language-server-path",
