@@ -82,9 +82,9 @@ class RubyLanguageServer {
 	notifyUserOfMissingCommand() {
 		if (this.isNotified) return;
 
-		const request = new NotificationRequest("rubocop-not-found");
-		request.title = nova.localize("RuboCop Not Found");
-		request.body = nova.localize("The \"rubocop\" command could not be found in your environment.");
+		const request = new NotificationRequest("solargraph-not-found");
+		request.title = nova.localize("Solargraph Not Found");
+		request.body = nova.localize("The \"solargraph\" command could not be found in your environment.");
 		request.actions = [nova.localize("OK"), nova.localize("Help")];
 
 		const notificationPromise = nova.notifications.add(request);
