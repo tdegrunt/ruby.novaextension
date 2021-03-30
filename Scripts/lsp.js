@@ -11,13 +11,13 @@ class RubyLanguageServer {
 			return Promise.resolve(this._isBundled);
 		}
 
-		if (!(nova.workspace.contains("Gemfile") || nova.workspace.contains("gems.rb") || nova.workspace.contains("bin/bundle"))) {
+		if (!(nova.workspace.contains(nova.workspace.path+"/Gemfile") || nova.workspace.contains(nova.workspace.path+"/gems.rb"))) {
 			this._isBundled = false;
 			return Promise.resolve(false);
 		}
-		
+				
 		return new Promise(resolve => {
-			const process = new Process("bin/bundle", {
+			const process = new Process("bundle", {
 				args: ["exec", "solargraph", "--version"],
 				cwd: nova.workspace.path,
 				shell: true
@@ -39,26 +39,41 @@ class RubyLanguageServer {
 		});
 	}
 
-	get isGlobal() {
-		if (typeof this._isGlobal !== "undefined") {
-			return Promise.resolve(this._isGlobal);
-		}
-
+	get globalPath() {
+		if (typeof this._globalPath !== "undefined") {
+          return Promise.resolve(this._globalPath);
+        }		
+				
 		return new Promise(resolve => {
-			const process = new Process("/usr/bin/env", {
-				args: ["solargraph", "--version"],
-				cwd: nova.workspace.path,
+			const process = new Process("which", {
+				args: ["solargraph"],
 				shell: true
 			});
 
-			let output = "";
-			process.onStdout(line => output += line.trim());
-			process.onDidExit(status => {
+			let path = "";
+			process.onStdout(line => path += line.trim());
+			process.onDidExit(status => {							
 				if (status === 0) {
-					console.log(`Found Solargraph ${output} (Global)`);
-					resolve(this._isGlobal = true);
+					const versionProcess = new Process(path, { 
+						args: ["--version"], 
+						shell: true
+					});
+					
+					let output = "";
+					versionProcess.onStdout(line => output += line.trim());
+					versionProcess.onDidExit(status => {
+						if (status === 0) {
+							console.log(`Found Solargraph ${output} (Global)`);
+							resolve(this._globalPath = path);
+						} else {
+							resolve(this._globalPath = false);
+						}
+					});		
+					
+					versionProcess.start();
+								
 				} else {
-					resolve(this._isGlobal = false);
+					resolve(this._globalPath = false);
 				}
 			});
 
@@ -68,13 +83,12 @@ class RubyLanguageServer {
 
 	async commandArgs(commandArguments) {
 		if (await this.isBundled) {
-			commandArguments.unshift(nova.workspace.path+"/bin/bundle", "exec");
-		} else if (!(await this.isGlobal)) {
-			this.notifyUserOfMissingCommand();
-			return false;
+			commandArguments.unshift(nova.workspace.path+"/bin/bundle", "exec", "solargraph");
+		} else if (await this.globalPath) {
+			commandArguments.unshift(await this.globalPath);
 		}
 
-		commandArguments.unshift("/usr/bin/env");
+		// commandArguments.unshift("/usr/bin/env");
 		const args = commandArguments;
 		return args;
 	}
@@ -113,16 +127,15 @@ class RubyLanguageServer {
 		if (!path) {
 			path = nova.workspace.path+'/bin/bundle';
 		}
-		
-		const defaultArguments = ["solargraph", "stdio"];
+				
+		const defaultArguments = ["stdio"];
 		const allArgs = await this.commandArgs(defaultArguments);
 		if (!allArgs) return;
-		
+				
 		// Create the client
 		var serverOptions = {
 			path: allArgs.shift(),
-			args: allArgs,
-			type: "stdio"
+			args: allArgs
 		};
 		var clientOptions = {
 			// The set of document syntaxes for which the server is valid
