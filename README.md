@@ -6,6 +6,12 @@ Ruby requires some additional tools to be installed on your Mac:
 
 - [Solargraph](https://solargraph.org)
 
+The extension uses the solargraph from your bundle, which usually gives the best results.
+
+## Example
+
+![Working completion](/images/completion.png "Working completion")
+
 ## Configuration
 
 No configuration yet.

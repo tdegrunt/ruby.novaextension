@@ -3,7 +3,7 @@
     "name": "Ruby",
     "organization": "tdegrunt",
     "description": "Provides Ruby language support",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "categories": ["languages"],
     "repository": "https://github.com/tdegrunt/nova-ruby",
     "bugs": "https://github.com/tdegrunt/nova-ruby/issues",
@@ -21,7 +21,7 @@
             "key": "ruby.language-server-path",
             "title": "Language Server Path",
             "type": "path",
-            "placeholder": "/usr/local/bin/solargraph"
+            "placeholder": "/Users/me/.rbenv/shims/solargraph"
         }
     ]
 }
