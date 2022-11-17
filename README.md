@@ -10,7 +10,7 @@ The extension uses the solargraph from your bundle, which usually gives the best
 
 ## Example
 
-![Working completion](/images/completion.png "Working completion")
+![Working completion](./images/completion.png "Working completion")
 
 ## Configuration
 
